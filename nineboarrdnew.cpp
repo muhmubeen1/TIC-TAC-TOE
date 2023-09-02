@@ -119,36 +119,11 @@ public:
     }
 };
 
-class Focus {
-private:
-    int selectedBoard;
-
-public:
-    Focus() {
-        selectedBoard = -1;
-    }
-
-    void selectBoard() {
-        do {
-            std::cout << "Select a board (1-9): ";
-            std::cin >> selectedBoard;
-        } while (selectedBoard < 1 || selectedBoard > NUM_BOARDS);
-    }
-
-    int getSelectedBoard() {
-        return selectedBoard;
-    }
-};
-
-class Game {
+class NBTicTacToe1 {
 private:
     TicTacToe boards[NUM_BOARDS];
-    Focus focus;
 
 public:
-    Game() {
-    }
-
     void displayBoards() {
         for (int i = 0; i < NUM_BOARDS; i++) {
             std::cout << "Board " << i + 1 << ":\n";
@@ -156,24 +131,31 @@ public:
         }
     }
 
-    void playSelectedBoard() {
-        int selectedBoard = focus.getSelectedBoard();
-        if (selectedBoard != -1) {
+    void playSelectedBoard(int selectedBoard) {
+        if (selectedBoard >= 1 && selectedBoard <= NUM_BOARDS) {
             boards[selectedBoard - 1].play();
         } else {
-            std::cout << "Please select a board first.\n";
+            std::cout << "Invalid board selection. Please choose a board between 1 and 9.\n";
         }
     }
 
     void play() {
-        focus.selectBoard();
         displayBoards();
-        playSelectedBoard();
+        int selectedBoard;
+        do {
+            std::cout << "Select a board to play (1-9): ";
+            std::cin >> selectedBoard;
+            if (selectedBoard >= 1 && selectedBoard <= NUM_BOARDS) {
+                playSelectedBoard(selectedBoard);
+            } else {
+                std::cout << "Invalid board selection. Please choose a board between 1 and 9.\n";
+            }
+        } while (true);
     }
 };
 
 int main() {
-    Game game;
+    NBTicTacToe1 game;
     game.play();
 
     return 0;
